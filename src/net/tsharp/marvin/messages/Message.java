@@ -17,6 +17,9 @@ public enum Message{
 	CLEAN(135),
 	CLEAN_MAX(136),
 	SEEK_DOCK(143),
+	DRIVE_ARC(144, MessageDrive.MessageDriveARC.class),
+	DRIVE_DIRECT(145, MessageDrive.MessageDriveDirect.class),
+	DRIVE_PWM(146, MessageDrive.MessageDrivePWM.class),
 	DIGIT_LEDS_ASCII(164, MessageDigitLedASCII.class),
 	STOP(173);
 	
