@@ -18,10 +18,10 @@ public class DriveAPI extends RoombaAPI{
 	 * @param velocity in mm/s
 	 * @param radius in mm
 	 */
-	public void driveARC(short velocity, short radius){
+	public void driveARC(int velocity, int radius){
 		MessageDriveARC message = (MessageDriveARC) Message.DRIVE_ARC.getNewInstance();
-		message.velocity = velocity;
-		message.radius = radius;
+		message.velocity = (short) velocity;
+		message.radius = (short) radius;
 		connection.sendMessage(message);
 	}
 	/**
@@ -29,10 +29,10 @@ public class DriveAPI extends RoombaAPI{
 	 * @param rightVelocity in mm/s
 	 * @param leftVelocity in mm/s
 	 */
-	public void driveDirect(short rightVelocity, short leftVelocity){
+	public void driveDirect(int rightVelocity, int leftVelocity){
 		MessageDriveDirect message = (MessageDriveDirect) Message.DRIVE_DIRECT.getNewInstance();
-		message.rightVelocity = rightVelocity;
-		message.leftVelocity = leftVelocity;
+		message.rightVelocity = (short) rightVelocity;
+		message.leftVelocity = (short) leftVelocity;
 		connection.sendMessage(message);
 	}
 	
@@ -41,10 +41,15 @@ public class DriveAPI extends RoombaAPI{
 	 * @param rightPWN PWM value (-255 - 255)
 	 * @param leftPWM PWM value (-255 - 255)
 	 */
-	public void drivePWM(short rightPWN, short leftPWM){
+	public void drivePWM(int rightPWN, int leftPWM){
 		MessageDrivePWM message = (MessageDrivePWM) Message.DRIVE_PWM.getNewInstance();
-		message.rightPWM = rightPWN;
-		message.leftPWM = leftPWM;
+		message.rightPWM = (short) rightPWN;
+		message.leftPWM = (short) leftPWM;
+		connection.sendMessage(message);
+	}
+	
+	public void stop(){
+		MessageDriveDirect message = (MessageDriveDirect) Message.DRIVE_DIRECT.getNewInstance();
 		connection.sendMessage(message);
 	}
 

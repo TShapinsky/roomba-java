@@ -3,10 +3,11 @@ package net.tsharp.marvin.messages;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 
 import net.tsharp.marvin.OpenInterfaceMessage;
 
-public abstract class MessageDrive {
+public final class MessageDrive {
 	public class MessageDriveARC extends OpenInterfaceMessage{
 		/**
 		 * velocity in mm/s
@@ -28,7 +29,10 @@ public abstract class MessageDrive {
 		
 		@Override
 		public void write(OutputStream out) throws IOException {
-			out.write(velocity << 16 | radius);
+			ByteBuffer buffer = ByteBuffer.allocate(4);
+			buffer.putShort(velocity);
+			buffer.putShort(radius);
+			out.write(buffer.array());
 		}	
 	}
 	
@@ -53,7 +57,10 @@ public abstract class MessageDrive {
 		
 		@Override
 		public void write(OutputStream out) throws IOException {
-			out.write(rightVelocity << 16 | leftVelocity);
+			ByteBuffer buffer = ByteBuffer.allocate(4);
+			buffer.putShort(rightVelocity);
+			buffer.putShort(leftVelocity);
+			out.write(buffer.array());
 		}	
 	}
 	
@@ -78,7 +85,10 @@ public abstract class MessageDrive {
 		
 		@Override
 		public void write(OutputStream out) throws IOException {
-			out.write(rightPWM << 16 | leftPWM);
+			ByteBuffer buffer = ByteBuffer.allocate(4);
+			buffer.putShort(rightPWM);
+			buffer.putShort(leftPWM);
+			out.write(buffer.array());
 		}	
 	}
 }

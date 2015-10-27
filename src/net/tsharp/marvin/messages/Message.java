@@ -16,8 +16,8 @@ public enum Message{
 	CLEAN_SPOT(134),
 	CLEAN(135),
 	CLEAN_MAX(136),
+	DRIVE_ARC(137, MessageDrive.MessageDriveARC.class),
 	SEEK_DOCK(143),
-	DRIVE_ARC(144, MessageDrive.MessageDriveARC.class),
 	DRIVE_DIRECT(145, MessageDrive.MessageDriveDirect.class),
 	DRIVE_PWM(146, MessageDrive.MessageDrivePWM.class),
 	DIGIT_LEDS_ASCII(164, MessageDigitLedASCII.class),
@@ -48,6 +48,9 @@ public enum Message{
 	
 	public OpenInterfaceMessage getNewInstance(){
 		try {
+			if(className.isMemberClass()){
+				return className.getConstructor(className.getEnclosingClass(),int.class).newInstance(className.getEnclosingClass().getConstructor().newInstance(),messageID);
+			}
 			return className.getConstructor(int.class).newInstance(messageID);
 		} catch (InstantiationException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException
