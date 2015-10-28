@@ -17,6 +17,8 @@ public enum Message{
 	CLEAN(135),
 	CLEAN_MAX(136),
 	DRIVE_ARC(137, MessageDrive.MessageDriveARC.class),
+	SONG(140, MessageSong.MessageSongUpload.class),
+	SONG_PLAY(141, MessageSong.MessageSongPlay.class),
 	SEEK_DOCK(143),
 	DRIVE_DIRECT(145, MessageDrive.MessageDriveDirect.class),
 	DRIVE_PWM(146, MessageDrive.MessageDrivePWM.class),
