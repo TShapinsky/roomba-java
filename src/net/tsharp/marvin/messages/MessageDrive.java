@@ -21,13 +21,6 @@ public final class MessageDrive {
 			super(messageID);
 		}
 		@Override
-		public void read(InputStream in) throws IOException {
-			int input = in.read();
-			velocity = (short) (input >> 16);
-			radius = (short) (input & 0xFFFF);
-		}
-		
-		@Override
 		public void write(OutputStream out) throws IOException {
 			ByteBuffer buffer = ByteBuffer.allocate(4);
 			buffer.putShort(velocity);
@@ -47,12 +40,6 @@ public final class MessageDrive {
 		public short leftVelocity;
 		public MessageDriveDirect(int messageID) {
 			super(messageID);
-		}
-		@Override
-		public void read(InputStream in) throws IOException {
-			int input = in.read();
-			rightVelocity = (short) (input >> 16);
-			leftVelocity = (short) (input & 0xFFFF);
 		}
 		
 		@Override
@@ -75,12 +62,6 @@ public final class MessageDrive {
 		public short leftPWM;
 		public MessageDrivePWM(int messageID) {
 			super(messageID);
-		}
-		@Override
-		public void read(InputStream in) throws IOException {
-			int input = in.read();
-			rightPWM = (short) (input >> 16);
-			leftPWM = (short) (input & 0xFFFF);
 		}
 		
 		@Override

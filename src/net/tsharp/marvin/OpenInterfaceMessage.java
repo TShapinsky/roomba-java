@@ -11,7 +11,7 @@ public class OpenInterfaceMessage {
 		this.messageID = messageID;
 	}
 	
-	public void read(InputStream in) throws IOException{
+	public void read(InputStream in, RoombaConnection connection) throws IOException{
 	}
 	public void write(OutputStream out) throws IOException{
 	};

@@ -8,6 +8,7 @@ import net.tsharp.marvin.OpenInterfaceMessage;
 
 public enum Message{
 	RESET(7),
+	STREAM_READ(19, MessageSensor.MessageSensorStreamRead.class),
 	START(128),
 	BAUD_RATE(129, MessageBaudRate.class),
 	MODE_SAFE(131),
@@ -19,9 +20,11 @@ public enum Message{
 	DRIVE_ARC(137, MessageDrive.MessageDriveARC.class),
 	SONG(140, MessageSong.MessageSongUpload.class),
 	SONG_PLAY(141, MessageSong.MessageSongPlay.class),
+	SENSORS(142, MessageSensor.MessageSensorRequest.class),
 	SEEK_DOCK(143),
 	DRIVE_DIRECT(145, MessageDrive.MessageDriveDirect.class),
 	DRIVE_PWM(146, MessageDrive.MessageDrivePWM.class),
+	STREAM(148,MessageSensor.MessageSensorStream.class),
 	DIGIT_LEDS_ASCII(164, MessageDigitLedASCII.class),
 	STOP(173);
 	

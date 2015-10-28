@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import net.tsharp.marvin.OpenInterfaceMessage;
+import net.tsharp.marvin.RoombaConnection;
 import net.tsharp.marvin.messages.enums.BaudRate;
 
 public class MessageBaudRate extends OpenInterfaceMessage{
@@ -14,7 +15,7 @@ public class MessageBaudRate extends OpenInterfaceMessage{
 
 	public BaudRate rate;
 	@Override
-	public void read(InputStream in) throws IOException {
+	public void read(InputStream in, RoombaConnection connection) throws IOException {
 		rate = BaudRate.getBaud(in.read());
 		
 	}

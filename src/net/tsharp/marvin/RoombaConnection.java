@@ -10,21 +10,31 @@ import gnu.io.UnsupportedCommOperationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TooManyListenersException;
 
 import sun.print.resources.serviceui;
+import net.tsharp.marvin.RoombaCallback.CallbackType;
 import net.tsharp.marvin.messages.Message;
 
 public class RoombaConnection implements SerialPortEventListener {
 	private static final int TIME_OUT = 2000;
 
+	private final RoombaConnection theRoombaConnection;
 	private int baudrate;
 	private CommPortIdentifier portId;
 	private InputStream in;
 	private OutputStream out;
 	private SerialPort serialPort;
+	private Map<RoombaCallback.CallbackType, ArrayList<RoombaCallback>> callbacks = new HashMap<RoombaCallback.CallbackType, ArrayList<RoombaCallback>>();
 
+	public RoombaConnection(){
+		theRoombaConnection = this;
+	}
+	
 	public boolean initialize(String port, int baudrate) {
 		this.baudrate = baudrate;
 		CommPortIdentifier portId = null;
@@ -58,6 +68,7 @@ public class RoombaConnection implements SerialPortEventListener {
 		// set port parameters
 		serialPort.setSerialPortParams(baudrate, SerialPort.DATABITS_8,
 				SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+		serialPort.setInputBufferSize(8);
 		out = serialPort.getOutputStream();
 		in = serialPort.getInputStream();
 		try {
@@ -74,11 +85,22 @@ public class RoombaConnection implements SerialPortEventListener {
 		switch (event.getEventType()) {
 		case SerialPortEvent.DATA_AVAILABLE:
 			try {
-				Message messageEnum = Message.getMessage(in.read());
-				if(messageEnum != null){
-					OpenInterfaceMessage message = messageEnum.getNewInstance();
-					message.read(in);
-				}
+				final int id = in.read();
+				new Thread(){
+					public void run() {
+						Message messageEnum = Message.getMessage(id);
+						if(messageEnum != null){
+							OpenInterfaceMessage message = messageEnum.getNewInstance();
+							try {
+								message.read(in, theRoombaConnection);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					};
+				}.start();
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -88,6 +110,17 @@ public class RoombaConnection implements SerialPortEventListener {
 			break;
 		}
 		
+	}
+	
+	public void registerCallback(RoombaCallback callback){
+		if(callbacks.get(callback.getCallbackType()) == null){
+			callbacks.put(callback.getCallbackType(), new ArrayList<RoombaCallback>());
+		}
+		callbacks.get(callback.getCallbackType()).add(callback);
+	}
+	
+	public ArrayList<RoombaCallback> getCallbacks(CallbackType type){
+		return callbacks.get(type);
 	}
 	
 	public void sendMessage(OpenInterfaceMessage message){
